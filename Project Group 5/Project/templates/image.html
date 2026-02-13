@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="w3-card-4 w3-margin">
+
+    <header class="w3-container w3-blue">
+      <h1>Hide Message</h1>
+    </header>
+
+    <div class="w3-container w3-cell">
+    <img src="static/images/test_image.png" alt="Alps" style="width:100%">
+    <br>
+  </div>
+
+  <div class="w3-container w3-cell">
+    <img src="static/images/test_image1.png" alt="Alps" style="width:100%">
+    <br>
+  </div>
+
+    <form class="w3-container w3-margin" action="" method="post" enctype="multipart/form-data">
+        
+      <div class="w3-cell">
+        <input class="w3-btn w3-blue-grey" type="file" name="photo" accept="image/*"/>
+        <!--input class="w3-btn w3-blue-grey" name="sub" type="submit" value="Upload"/-->
+        <br><br>
+      </div>
+
+      <div class="w3-cell">
+        <input class="w3-btn w3-blue-grey w3-margin-left" type="file" name="photo1" accept="image/*"/>
+        <input class="w3-btn w3-blue-grey" name="sub" type="submit" value="Upload"/>
+        <br><br>
+      </div>
+
+        <label class="w3-text-teal"><b>Secrete Message</b></label>
+        <textarea class="w3-input w3-border w3-light-grey" rows="10" cols="47" name="mgs" placeholder="Type Your Message Here..!!">{% if symptoms %} {{symptoms}} {% endif %}</textarea>
+        <br>
+       
+        <input class="w3-btn w3-blue-grey" name="sub" type="submit" value="Hide">
+
+    </form>
+
+    <br>
+    <footer class="w3-container w3-blue">
+      <h5></h5>
+    </footer>
+    
+    </div>
+
+    <div class="w3-card-4 w3-margin">
+
+      <header class="w3-container w3-blue">
+        <h1>Cipher Text</h1>
+      </header>
+      
+      <div class="w3-container">
+        <p>
+         {{ cipher }}
+      </p>
+      </div>
+      
+      <footer class="w3-container w3-blue">
+        <h5></h5>
+      </footer>
+      
+      </div>    
+
+    <div class="w3-card-4 w3-margin">
+
+        <header class="w3-container w3-blue">
+          <h1>Stego-Image</h1>
+        </header>
+
+        <div class="w3-cell">
+        <img src="static/images/stegoImage.png" alt="Alps" style="width:100%">
+        <br> 
+        </div>
+
+        <div class="w3-cell">
+          <img src="static/images/stegoImage1.png" alt="Alps" style="width:100%">
+          <br> 
+        </div>
+
+        <!--div class="w3-container">
+          <p>TContrary to popular belief, Lorem Ipsum is not simply random text. 
+        </p>
+        </div-->
+        
+        <footer class="w3-container w3-blue">
+          <h5></h5>
+        </footer>
+    </div>
+
+    {% endblock %}
