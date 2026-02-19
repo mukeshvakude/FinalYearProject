@@ -25,20 +25,22 @@ const DELIMITER = '11111110'; // 0xFF sentinel
  */
 function textToBinary(text) {
   const bytes = Buffer.from(text, 'utf8');
-  return Array.from(bytes)
-    .map((b) => b.toString(2).padStart(8, '0'))
-    .join('') + DELIMITER;
+  let result = '';
+  for (let i = 0; i < bytes.length; i++) {
+    result += bytes[i].toString(2).padStart(8, '0');
+  }
+  return result + DELIMITER;
 }
 
 /**
  * Convert a binary string back to UTF-8 text.
  */
 function binaryToText(bits) {
-  let text = '';
+  const chars = [];
   for (let i = 0; i + 8 <= bits.length; i += 8) {
-    text += String.fromCharCode(parseInt(bits.slice(i, i + 8), 2));
+    chars.push(String.fromCharCode(parseInt(bits.slice(i, i + 8), 2)));
   }
-  return Buffer.from(text, 'binary').toString('utf8');
+  return Buffer.from(chars.join(''), 'binary').toString('utf8');
 }
 
 /**

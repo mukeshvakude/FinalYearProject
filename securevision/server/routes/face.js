@@ -38,7 +38,8 @@ router.post(
       form.append('image1', fs.createReadStream(img1Path));
       form.append('image2', fs.createReadStream(img2Path));
 
-      const faceServiceUrl = process.env.FACE_SERVICE_URL || 'http://localhost:8000';
+      const faceServiceUrl = process.env.FACE_SERVICE_URL;
+      if (!faceServiceUrl) throw new Error('FACE_SERVICE_URL environment variable is not set');
       const response = await axios.post(`${faceServiceUrl}/verify-face`, form, {
         headers: form.getHeaders(),
         timeout: 60000

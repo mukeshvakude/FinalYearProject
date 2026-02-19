@@ -47,4 +47,7 @@ def verify_face():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8000))
+    # NOTE: This built-in Flask server is for development only.
+    # In production use a WSGI server such as Gunicorn:
+    #   gunicorn -w 2 -b 0.0.0.0:8000 app:app
     app.run(host='0.0.0.0', port=port, debug=False)
