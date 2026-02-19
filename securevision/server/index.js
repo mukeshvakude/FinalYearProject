@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 const authRoutes = require('./routes/auth');
 const stegoRoutes = require('./routes/stego');
@@ -15,13 +16,32 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ── Rate limiting ──────────────────────────────────────────────────────────
+// Stricter limit for auth endpoints to mitigate brute-force attacks
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests from this IP, please try again later.' }
+});
+
+// General limit for protected API endpoints
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests from this IP, please try again later.' }
+});
+
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API routes
-app.use('/api/auth', authRoutes);
-app.use('/api/stego', stegoRoutes);
-app.use('/api/face', faceRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
+app.use('/api/stego', apiLimiter, stegoRoutes);
+app.use('/api/face', apiLimiter, faceRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
