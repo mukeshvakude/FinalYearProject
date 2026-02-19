@@ -7,9 +7,11 @@ const auth = require('../middleware/auth');
 const JWT_EXPIRY = '7d';
 
 function signToken(user) {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error('JWT_SECRET environment variable is not set');
   return jwt.sign(
     { id: user._id, username: user.username, email: user.email },
-    process.env.JWT_SECRET || 'fallback_secret',
+    secret,
     { expiresIn: JWT_EXPIRY }
   );
 }

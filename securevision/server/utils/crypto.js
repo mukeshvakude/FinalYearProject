@@ -2,11 +2,12 @@ const crypto = require('crypto');
 
 const ALGORITHM = 'aes-256-cbc';
 
-// Derive a 32-byte key from the env variable
+// Derive a deterministic 32-byte key using SHA-256 so that any-length secret
+// is safely normalised without sacrificing entropy.
 function getKey() {
-  const raw = process.env.AES_SECRET || 'default_32_char_secret_key_here!';
-  // Ensure exactly 32 bytes (pad with zeros or truncate)
-  return Buffer.from(raw.padEnd(32, '0').slice(0, 32), 'utf8');
+  const raw = process.env.AES_SECRET;
+  if (!raw) throw new Error('AES_SECRET environment variable is not set');
+  return crypto.createHash('sha256').update(raw, 'utf8').digest();
 }
 
 /**
